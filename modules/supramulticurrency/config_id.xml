@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<module>
+	<name>supramulticurrency</name>
+	<displayName><![CDATA[Supra Multi Currency Product]]></displayName>
+	<version><![CDATA[1]]></version>
+	<description><![CDATA[Supra Multi Currency Product]]></description>
+	<author><![CDATA[PT.SUPRABAKTI MANDIRI]]></author>
+	<tab><![CDATA[front_office_features]]></tab>
+	<confirmUninstall><![CDATA[Apakah Anda Akan Mendelete Module ini ?]]></confirmUninstall>
+	<is_configurable>0</is_configurable>
+	<need_instance>1</need_instance>
+	<limited_countries></limited_countries>
+</module>
