@@ -20,6 +20,8 @@ class TableConfirmPayment extends ObjectModel
 
 	public $notes;
 
+	public $state;
+
 	public static $definition = array(
 		'table' => 'confirmpayment',
 		'primary' => 'id_confirmpayment',

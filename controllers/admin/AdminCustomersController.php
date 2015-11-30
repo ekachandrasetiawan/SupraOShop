@@ -333,6 +333,7 @@ class AdminCustomersControllerCore extends AdminController
     public function renderForm()
     {
         /** @var Customer $obj */
+
         if (!($obj = $this->loadObject(true))) {
             return;
         }
@@ -899,6 +900,7 @@ class AdminCustomersControllerCore extends AdminController
 
     public function processAdd()
     {
+        
         if (Tools::getValue('submitFormAjax')) {
             $this->redirect_after = false;
         }

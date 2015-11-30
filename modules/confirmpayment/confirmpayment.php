@@ -371,7 +371,6 @@ class ConfirmPayment extends Module
 			$fields_value['state'] = Tools::getValue('state');
 		}
 				
-
 		$fields_value['id_confirmpayment'] = $id_confirmpayment;
 
 		return $fields_value;

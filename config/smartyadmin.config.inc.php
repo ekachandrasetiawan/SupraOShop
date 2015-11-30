@@ -25,7 +25,7 @@
 */
 
 global $smarty;
-$smarty->debugging = false;
+$smarty->debugging = true;
 $smarty->debugging_ctrl = 'NONE';
 
 // Let user choose to force compilation
