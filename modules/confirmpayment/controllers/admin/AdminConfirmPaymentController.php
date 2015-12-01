@@ -11,8 +11,8 @@ class AdminConfirmPaymentController extends ModuleAdminController
     	$this->name ='confirmpayment';
         $this->table = 'confirmpayment';
         $this->displayName='Konfirmasi Pembayaran';
-    	$this->addRowAction('edit');
-        $this->addRowAction('delete');
+    	// $this->addRowAction('edit');
+     //    $this->addRowAction('delete');
         $this->addRowAction('view');
 
         $this->context = Context::getContext();
@@ -20,7 +20,6 @@ class AdminConfirmPaymentController extends ModuleAdminController
         if (!Tools::getValue('realedit')) {
             $this->deleted = false;
         }
-
         $this->bulk_actions = array(
             'delete' => array(
                 'text' => $this->l('Delete selected'),
@@ -28,22 +27,31 @@ class AdminConfirmPaymentController extends ModuleAdminController
                 'icon' => 'icon-trash'
             )
         );
-
 	    parent::__construct();
     }
 
 
     public function initPageHeaderToolbar()
     {
-        if (empty($this->display)) {
-            $this->page_header_toolbar_btn['new_confirmpayment'] = array(
-                'href' => self::$currentIndex.'&addconfirmpayment&token='.$this->token,
-                'desc' => $this->l('Add new ConfirmPayment', null, null, false),
-                'icon' => 'process-icon-new'
-            );
-        }
-        else if($this->display=='view') {
-
+        // if (empty($this->display)) {
+        //     $this->page_header_toolbar_btn['new_confirmpayment'] = array(
+        //         'href' => self::$currentIndex.'&addconfirmpayment&token='.$this->token,
+        //         'desc' => $this->l('Add new ConfirmPayment', null, null, false),
+        //         'icon' => 'process-icon-new'
+        //     );
+        // }
+        // else if($this->display=='view') {
+        // 	$id_confirmpayment = (int)Tools::getValue('id_confirmpayment');
+        // 	$payment = new TableConfirmPayment((int)$id_confirmpayment);
+        	
+        // 	$this->page_header_toolbar_btn['new_confirmpayment'] = array(
+        //         'href' => 'index.php?controller=AdminOrders&id_order='.$payment->id_order.'&vieworder&token='.Tools::getAdminTokenLite('AdminOrders'),
+        //         'desc' => $this->l('View Order', null, null, false),
+        //         'icon' => 'process-icon-preview'
+        //     );
+        // }
+        // else 
+        if($this->display=='view') {
         	$id_confirmpayment = (int)Tools::getValue('id_confirmpayment');
         	$payment = new TableConfirmPayment((int)$id_confirmpayment);
         	
@@ -55,20 +63,42 @@ class AdminConfirmPaymentController extends ModuleAdminController
         }
         parent::initPageHeaderToolbar();
     }
- 	public function renderView()
-    {	
-    	if (!($customer = $this->loadObject())) {
-            return;
-        }
-    	$id_confirmpayment = (int)Tools::getValue('id_confirmpayment');
-    	$payment = new TableConfirmPayment((int)$id_confirmpayment);
-    	$this->base_tpl_view = 'view.tpl';
-    	$this->tpl_view_vars = array(
-    			'id_order'=>$payment->id_order
-    		);
-    	
-    	 return parent::renderView();
-    }
+
+	public function renderView()
+	{	
+		$id_confirmpayment = (int)Tools::getValue('id_confirmpayment');
+		$payment = new TableConfirmPayment((int)$id_confirmpayment);
+
+		$order = new OrderCore((int)$payment->id_order);
+		$customer = new Customer((int)$order->id_customer);
+
+		if($customer->id_gender=='1'){
+			$gender ='Tuan';
+		}else{
+			$gender ='Ny';
+		}
+
+		// Data Konfirmasi Pembayaran
+		$this->tpl_vars = array(
+			'gender' => $gender,
+			'firstname' => $customer->firstname,
+			'lastname' => $customer->lastname,
+			'email' => $customer->email,
+            'order' => $order->reference,
+            'nama_bank' => $payment->nama_bank,
+            'pemilik_rek' => $payment->reg_account_bank,
+            'rekening_tujuan'=>$payment->data_rek,
+            'payment'=>Tools::displayPrice($payment->payment, $this->context->currency->id),
+            'payment_date'=>$payment->payment_date,
+            'state'=>$payment->state,
+            'notes'=>$payment->notes,
+        );
+
+		$tpl = $this->context->smarty->createTemplate(dirname(__FILE__).'/../../views/templates/admin/confirmpayment/helpers/view/view_bt.tpl');
+		$tpl->assign($this->tpl_vars);
+		return $tpl->fetch();
+	}
+
 	public function renderList()
 	{
 		
@@ -107,14 +137,15 @@ class AdminConfirmPaymentController extends ModuleAdminController
 		$helper->shopLinkType = '';
 		$helper->simple_header = false;
 		$helper->identifier = 'id_confirmpayment';
-		$helper->actions = array('edit', 'delete','view');
+		$helper->actions = array('view');
+		// $helper->actions = array('edit', 'delete','view');
 		$helper->show_toolbar = true;
 		$helper->imageType = 'jpg';
-		$helper->toolbar_btn['new'] = array(
-			'href' => AdminController::$currentIndex.'&configure='.$this->name.'&add'.$this->name.'&token='.$this->token,
-			'desc' => $this->l('Add new')
-		);
-		$helper->title = $this->displayName;
+		// $helper->toolbar_btn['new'] = array(
+		// 	'href' => AdminController::$currentIndex.'&configure='.$this->name.'&add'.$this->name.'&token='.$this->token,
+		// 	'desc' => $this->l('Add new')
+		// );
+		$helper->title = 'DATA KONFIRMASI PEMBAYARAN';
 		$helper->table = $this->name;
 		$helper->token = $this->token;
 		$helper->currentIndex = AdminController::$currentIndex.'&configure='.$this->name;
@@ -134,11 +165,9 @@ class AdminConfirmPaymentController extends ModuleAdminController
 
 	public function renderForm()
     {
-
     	if (!($obj = $this->loadObject(true))) {
             return;
         }
-
         $id_confirmpayment = (int)Tools::getValue('id_confirmpayment');
 
 		if ($id_confirmpayment)
@@ -207,31 +236,34 @@ class AdminConfirmPaymentController extends ModuleAdminController
 				  'label' => $this->l('Order'),         
 				  'desc' => $this->l('Choose Order'),  
 				  'name' => 'id_order',                     
-				  'required' => true,                              
+				  'required' => true,
 				  'options' => array(
 					    'query' => $list,                           
 					    'id' => 'id_order',                           
-					    'name' => 'reference'                               
+					    'name' => 'reference'                        
 				  )
 				),
 				'nama_bank' => array(
 					'type' => 'text',
 					'label' => 'Nama Bank',
 					'name' => 'nama_bank',
-					'required'=>true
+					'required'=>true,
+					'readonly'=>'readonly'
 				),
 				'reg_account_bank' => array(
 					'type' => 'text',
 					'label' => 'Nama Pengirim',
 					'name' => 'reg_account_bank',
-					'required'=>true
+					'required'=>true,
+					'readonly'=>'readonly'
 				),
 				'data_rek' =>array(
 				  'type' => 'select',                              
 				  'label' => $this->l('Rekening Tujuan'),         
 				  'desc' => $this->l('Choose Rekening Tujuan'),  
 				  'name' => 'data_rek',                     
-				  'required' => true,                              
+				  'required' => true,
+				  'readonly'=>'readonly',                             
 				  'options' => array(
 					    'query' => $bank,                           
 					    'id' => 'id_option',                           
@@ -242,13 +274,15 @@ class AdminConfirmPaymentController extends ModuleAdminController
 					'type' => 'text',
 					'label' => 'Total Payment',
 					'name' => 'payment',
-					'required'=>true
+					'required'=>true,
+					'readonly'=>'readonly'
 				),
 				'payment_date' => array(
 					'type' => 'date',
 					'label' => 'Payment Date',
 					'name' => 'payment_date',
-					'required'=>true
+					'required'=>true,
+					'readonly'=>'readonly'
 				),
 				'content' => array(
 					'type' => 'textarea',
@@ -264,11 +298,14 @@ class AdminConfirmPaymentController extends ModuleAdminController
 				  'label' => 'WAITING',         
 				  'desc' => $this->l('Choose State Konfirmasi Pembayaran'),  
 				  'name' => 'state',                     
-				  'required' => true,                              
+				  'required' => true,
+				  'readonly'=>'readonly',                        
 				  'options' => array(
 					    'query' => $state,                           
 					    'id' => 'id_state',                           
-					    'name' => 'name'                               
+					    'name' => 'name',
+					    'readonly'=>'readonly'
+
 				  )
 				),
 			),

@@ -21,7 +21,7 @@
 *  @copyright  2007-2015 PrestaShop SA
 *  @license    http://opensource.org/licenses/afl-3.0.php  Academic Free License (AFL 3.0)
 *  International Registered Trademark & Property of PrestaShop SA
-*}
+*} 
 <script>
 	var current_level_percent_tab = {$current_level_percent|intval};
 	var current_level_tab = '{$current_level|intval}';

@@ -68,7 +68,7 @@ class ConfirmPayment extends Module
 		$tab->active = 1;
 		$tab->class_name = 'AdminConfirmPayment';
 		foreach (Language::getLanguages(true) as $lang)
-			$tab->name[$lang['id_lang']] = 'Confirm Payment';
+			$tab->name[$lang['id_lang']] = 'Konfirmasi Pembayaran';
 		$tab->id_parent = (int)Tab::getIdFromClassName('AdminParentOrders');
 		$tab->module = $this->name;
 		return $tab->add();
