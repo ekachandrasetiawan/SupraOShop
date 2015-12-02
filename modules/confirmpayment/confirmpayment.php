@@ -52,7 +52,7 @@ class ConfirmPayment extends Module
 						`nama_bank` varchar(100) NOT NULL,
 						`no_rek` varchar(100) NOT NULL,
 						`reg_account_bank` varchar(100) NOT NULL,
-						`data_rek` varchar(100) NOT NULL,
+						`id_account_bank` int(11) NOT NULL,
 						`payment` decimal(10,2) NOT NULL,  
 						`payment_date` date NOT NULL,
 						`state` varchar(100) NULL,
@@ -162,7 +162,7 @@ class ConfirmPayment extends Module
 		$chandra->nama_bank = Tools::getValue('nama_bank');
 		$chandra->no_rek = Tools::getValue('no_rek');
 		$chandra->reg_account_bank = Tools::getValue('reg_account_bank');
-		$chandra->data_rek = Tools::getValue('data_rek');
+		$chandra->id_account_bank = Tools::getValue('id_account_bank');
 		$chandra->payment = Tools::getValue('payment');
 		$chandra->payment_date = Tools::getValue('payment_date');
 		$chandra->notes = Tools::getValue('notes');
@@ -265,11 +265,11 @@ class ConfirmPayment extends Module
 					'name' => 'reg_account_bank',
 					'required'=>true
 				),
-				'data_rek' =>array(
+				'id_account_bank' =>array(
 				  'type' => 'select',                              
 				  'label' => $this->l('Rekening Tujuan'),         
 				  'desc' => $this->l('Choose Rekening Tujuan'),  
-				  'name' => 'data_rek',                     
+				  'name' => 'id_account_bank',                     
 				  'required' => true,                              
 				  'options' => array(
 					    'query' => $options,                           
@@ -352,7 +352,7 @@ class ConfirmPayment extends Module
 			$fields_value['nama_bank'] = $chandra->nama_bank;
 			$fields_value['no_rek'] = $chandra->no_rek;
 			$fields_value['reg_account_bank'] = $chandra->reg_account_bank;
-			$fields_value['data_rek'] = $chandra->data_rek;
+			$fields_value['id_account_bank'] = $chandra->id_account_bank;
 			$fields_value['payment'] = $chandra->payment;
 			$fields_value['payment_date'] = $chandra->payment_date;
 			$fields_value['notes'] = $chandra->notes;
@@ -364,7 +364,7 @@ class ConfirmPayment extends Module
 			$fields_value['nama_bank'] = Tools::getValue('nama_bank');
 			$fields_value['no_rek'] = Tools::getValue('no_rek');
 			$fields_value['reg_account_bank'] = Tools::getValue('reg_account_bank');
-			$fields_value['data_rek'] = Tools::getValue('data_rek');
+			$fields_value['id_account_bank'] = Tools::getValue('id_account_bank');
 			$fields_value['payment'] = Tools::getValue('payment');
 			$fields_value['payment_date'] = Tools::getValue('payment_date');
 			$fields_value['notes'] = Tools::getValue('notes');
@@ -397,7 +397,7 @@ class ConfirmPayment extends Module
 				'search' => true,
 				'orderby' => true,
 			);
-		$this->fields_list['data_rek'] = array(
+		$this->fields_list['id_account_bank'] = array(
 				'title' => $this->l('Rekening Tujuan'),
 				'type' => 'text',
 				'search' => true,
@@ -440,7 +440,7 @@ class ConfirmPayment extends Module
 
 	public function getListContent()
 	{
-		$sql = 'SELECT r.`id_confirmpayment`,r.`id_order`, r.`nama_bank`, r.`no_rek`, r.`data_rek`, r.`payment_date`,r.`state`
+		$sql = 'SELECT r.`id_confirmpayment`,r.`id_order`, r.`nama_bank`, r.`no_rek`, r.`id_account_bank`, r.`payment_date`,r.`state`
 			FROM `'._DB_PREFIX_.'confirmpayment` r';
 
 		$content = Db::getInstance()->executeS($sql);

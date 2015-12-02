@@ -24,9 +24,10 @@ class ConfirmPaymentConfirmPaymentModuleFrontController extends ModuleFrontContr
     		$confirmpayment->id_order = Tools::getValue('id_order');
     		$confirmpayment->nama_bank = Tools::getValue('nama_bank');
     		$confirmpayment->reg_account_bank = Tools::getValue('reg_account_bank');
-    		$confirmpayment->data_rek = Tools::getValue('data_rek');
+    		$confirmpayment->id_account_bank = Tools::getValue('id_account_bank');
     		$confirmpayment->payment = Tools::getValue('payment');
     		$confirmpayment->payment_date = Tools::getValue('payment_date');
+    		$confirmpayment->state = 'WAITING';
 
 
     		if(!$confirmpayment->id_order){
@@ -35,7 +36,7 @@ class ConfirmPaymentConfirmPaymentModuleFrontController extends ModuleFrontContr
                 $this->errors[] = Tools::displayError('Nama Bank tidak boleh kosong.');
             }elseif (!$confirmpayment->reg_account_bank) {
             	$this->errors[] = Tools::displayError('Atas Nama tidak boleh kosong.');
-            }elseif (!$confirmpayment->data_rek) {
+            }elseif (!$confirmpayment->id_account_bank) {
             	$this->errors[] = Tools::displayError('Pilih Rekening Tujuan');
             }elseif (!$confirmpayment->payment) {
             	$this->errors[] = Tools::displayError('Jumlah Pembayaran tidak boleh kosong.');
@@ -95,6 +96,17 @@ class ConfirmPaymentConfirmPaymentModuleFrontController extends ModuleFrontContr
 		foreach ($data as $value) {
 			$list[] = ['id_order'=>$value['id_order'],'name'=>$value['reference']];
 		}
+
+		$sqlbank = 'SELECT a.`id_accountbank`,a.`nama_bank`,a.`no_rek`
+		FROM `'._DB_PREFIX_.'accountbank` a';
+		$databank = Db::getInstance()->executeS($sqlbank);
+		$bank = array();
+
+		foreach ($databank as $bnk) {
+			$bank[] = ['id_account_bank'=>$bnk['id_accountbank'],'name'=>$bnk['nama_bank'].' ['.$bnk['no_rek'].' ]'];
+		}
+
+		$this->context->smarty->assign('bank', $bank);
 		$this->context->smarty->assign('orders', $list);
 		$this->context->smarty->assign('date', date('Y-m-d'));
 		$this->setTemplate('confirmpayment.tpl');

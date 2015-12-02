@@ -259,8 +259,8 @@
 	        $sbm_currency = New Currency((int)$product_sbm['id_currency']);
 	        $new_product_price = (float)$product_sbm['product_price'] * ($def_currency->conversion_rate / $sbm_currency->conversion_rate);
 	        $new_product_sale_price = (float)$product_sbm['product_sale_price'] * ($def_currency->conversion_rate / $sbm_currency->conversion_rate);
-	        $new_product_price = (float)$this->priceRound($new_product_price);
-	        $new_product_sale_price = (float)$this->priceRound($new_product_sale_price);
+	        // $new_product_price = (float)$this->priceRound($new_product_price);
+	        // $new_product_sale_price = (float)$this->priceRound($new_product_sale_price);
 	        $sql1 = "UPDATE `" . _DB_PREFIX_ . "product` SET 
 	        								`price` = " . $new_product_price . ", 
 	        								`wholesale_price` = " . $new_product_sale_price . " 

@@ -12,7 +12,7 @@ class TableConfirmPayment extends ObjectModel
 
 	public $reg_account_bank;
 
-	public $data_rek;
+	public $id_account_bank;
 
 	public $payment;
 
@@ -30,7 +30,7 @@ class TableConfirmPayment extends ObjectModel
 			'nama_bank' 		=> 	array('type' => self::TYPE_STRING, 'validate' => 'isGenericName', 'required' => true, 'size' => 50),
 			'no_rek' 			=>  array('type' => self::TYPE_INT, 'size' => 16, 'required' => false),
 			'reg_account_bank' 	=>  array('type' => self::TYPE_STRING, 'validate' => 'isGenericName','required' => true,),
-			'data_rek' 			=>  array('type' => self::TYPE_STRING, 'validate' => 'isGenericName','required' => true,),
+			'id_account_bank'	=>  array('type' => self::TYPE_INT, 'validate' => 'isUnsignedId', 'required' => true),
 			'payment' 			=>	array('type' => self::TYPE_FLOAT, 'validate' => 'isPrice'),
 			'payment_date' 		=>  array('type' => self::TYPE_DATE),
 			'state' 			=>  array('type' => self::TYPE_STRING),

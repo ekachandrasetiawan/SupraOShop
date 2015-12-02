@@ -46,7 +46,7 @@
 					<th data-sort-ignore="true" data-hide="phone,tablet" class="item">{l s='Payment'}</th>
 					<th class="item">{l s='Status'}</th>
 					<th data-sort-ignore="true" data-hide="phone,tablet" class="item">{l s='Invoice'}</th>
-					<th data-sort-ignore="true" data-hide="phone,tablet" class="last_item">&nbsp;</th>
+					<th data-sort-ignore="true" data-hide="phone,tablet" class="last_item">Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -68,8 +68,9 @@
 								{displayPrice price=$order.total_paid currency=$order.id_currency no_utf8=false convert=false}
 							</span>
 						</td>
+						
 						<td class="history_method">{$order.payment|escape:'html':'UTF-8'}</td>
-						<td{if isset($order.order_state)} data-value="{$order.id_order_state}"{/if} class="history_state">
+						<td{if isset($order.order_state)} data-value="{$order.current_state}"{/if} class="history_state">
 							{if isset($order.order_state)}
 								<span class="label{if isset($order.order_state_color) && Tools::getBrightness($order.order_state_color) > 128} dark{/if}"{if isset($order.order_state_color) && $order.order_state_color} style="background-color:{$order.order_state_color|escape:'html':'UTF-8'}; border-color:{$order.order_state_color|escape:'html':'UTF-8'};"{/if}>
 									{$order.order_state|escape:'html':'UTF-8'}
@@ -91,7 +92,7 @@
 									{l s='Details'}<i class="icon-chevron-right right"></i>
 								</span>
 							</a>
-							{if isset($opc) && $opc}
+						<!-- 	{if isset($opc) && $opc}
 								<a class="link-button" href="{$link->getPageLink('order-opc', true, NULL, "submitReorder&id_order={$order.id_order|intval}")|escape:'html':'UTF-8'}" title="{l s='Reorder'}">
 							{else}
 								<a class="link-button" href="{$link->getPageLink('order', true, NULL, "submitReorder&id_order={$order.id_order|intval}")|escape:'html':'UTF-8'}" title="{l s='Reorder'}">
@@ -99,7 +100,18 @@
 								{if isset($reorderingAllowed) && $reorderingAllowed}
 									<i class="icon-refresh"></i>{l s='Reorder'}
 								{/if}
+
+								
+							</a> -->
+							{if isset($order.order_state)}
+							{if $order.current_state == '10'}
+							<a class="btn btn-default button button-small" href="{$link->getModuleLink('confirmpayment', 'confirmpayment', array(), true)|escape:'html':'UTF-8'}" title="{l s='Confirm Payment' mod='confirmpayment'}">
+								<span>
+									{l s='Confirm'}<i class="icon-chevron-right right"></i>
+								</span>
 							</a>
+							{/if}
+							{/if}
 						</td>
 					</tr>
 				{/foreach}

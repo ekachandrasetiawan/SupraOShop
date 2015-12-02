@@ -75,10 +75,6 @@
 										<span class="label label-danger">
 											<i class="icon-check"></i> {$state}
 										</span>
-										{else if $state=="POSTPONE"}
-										<span class="label label-danger">
-											<i class="icon-check"></i> {$state}
-										</span>
 										{/if}
 									</p>
 								</div>

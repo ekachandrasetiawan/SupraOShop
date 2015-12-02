@@ -3,7 +3,6 @@
         <a href="{$link->getPageLink('my-account', true)|escape:'html'}">{l s='My account' mod='confirmpayment'}</a>
         <span class="navigation-pipe">{$navigationPipe}</span>
         Konfirmasi Pembayaran
-		
     {/capture}
 
 <div id="mywishlist">
@@ -46,10 +45,11 @@
 					<label for="name" class="align_right">
 						<div class="required">*</div> Rekening Tujuan
 					</label>
-					<select name="data_rek" class="inputTxt form-control">
+					<select name="id_account_bank" class="inputTxt form-control">
 						<option value="">Select Rekening Tujuan</option>
-						<option value="BANK PERMATA">BANK PERMATA</option>
-						<option value="BANK BCA">BANK BCA</option>
+						{foreach from=$bank item=val}
+						<option value="{$val.id_account_bank|intval}"{if isset($smarty.request.id_account_bank) && $smarty.request.id_account_bank == $val.id_account_bank} selected="selected"{/if}>{$val.name|escape:'html':'UTF-8'}</option>
+						{/foreach}
 					</select>
 
 					<label for="name" class="align_right">
