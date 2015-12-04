@@ -49,6 +49,7 @@
 		</ol>
 	</div>
 	{/if}-->
+	<p class="alert alert-success">{l s='Registration successful, please activate email..'}</p>
 	<div class="row">
 		<div class="col-xs-12 col-sm-6">
 			<form action="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" method="post" id="create-account_form" class="box">
