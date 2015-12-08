@@ -35,7 +35,16 @@
 {assign var="postCodeExist" value=false}
 {assign var="dniExist" value=false}
 {if !isset($email_create)}
-	<!--{if isset($authentification_error)}
+<!-- {if !isset($aktivasi_email)}
+	<p>============{$activasi_email}===================</p>
+{/if} -->
+<!-- {if isset($aktivasi_email)}
+	<p>=================={$aktivasi_email}=============</p>
+	<p class="alert alert-success">{l s='Registration successful, please activate email..'}</p>
+{else}
+	<p>=================={$aktivasi_email}=============</p>
+{/if} -->
+<!-- 	{if isset($authentification_error)}
 	<div class="alert alert-danger">
 		{if {$authentification_error|@count} == 1}
 			<p>{l s='There\'s at least one error'} :</p>
@@ -48,8 +57,8 @@
 			{/foreach}
 		</ol>
 	</div>
-	{/if}-->
-	<p class="alert alert-success">{l s='Registration successful, please activate email..'}</p>
+	{/if} -->
+	
 	<div class="row">
 		<div class="col-xs-12 col-sm-6">
 			<form action="{$link->getPageLink('authentication', true)|escape:'html':'UTF-8'}" method="post" id="create-account_form" class="box">
