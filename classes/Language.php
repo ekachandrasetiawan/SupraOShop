@@ -280,6 +280,7 @@ class LanguageCore extends ObjectModel
         // Added natives mails files
         $mFiles = array(
             'account.html', 'account.txt',
+            'aktivasi.html', 'aktivasi.txt',
             'backoffice_order.html', 'backoffice_order.txt',
             'bankwire.html', 'bankwire.txt',
             'cheque.html', 'cheque.txt',

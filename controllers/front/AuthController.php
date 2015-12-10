@@ -150,6 +150,7 @@ class AuthControllerCore extends FrontController
         ));
 
         // Just set $this->template value here in case it's used by Ajax
+
         $this->setTemplate(_PS_THEME_DIR_.'authentication.tpl');
 
         if ($this->ajax) {
@@ -267,6 +268,7 @@ class AuthControllerCore extends FrontController
      */
     protected function processSubmitLogin()
     {
+
         Hook::exec('actionBeforeAuthentication');
         $passwd = trim(Tools::getValue('passwd'));
         $_POST['passwd'] = null;
@@ -330,7 +332,6 @@ class AuthControllerCore extends FrontController
 
                 if (!$this->ajax) {
                     $back = Tools::getValue('back','my-account');
-
                     if ($back == Tools::secureReferrer($back)) {
                         Tools::redirect(html_entity_decode($back));
                     }
@@ -454,8 +455,7 @@ class AuthControllerCore extends FrontController
 
                 // New Guest customer
                 $customer->is_guest = (Tools::isSubmit('is_new_customer') ? !Tools::getValue('is_new_customer', 1) : 0);
-                $customer->active = 0;
-                // $customer->active = 1;
+                $customer->active = 1;
 
                 if (!count($this->errors)) {
                     if ($customer->add()) {
@@ -496,7 +496,6 @@ class AuthControllerCore extends FrontController
                         }
                         // else : redirection to the account
                         else {
-                            $this->errors[] = Tools::displayError('Aktivasi Email');
                             Tools::redirect('index.php?controller='.(($this->authRedirection !== false) ? urlencode($this->authRedirection) : 'hubungi-kami'));
                         }
                     } else {

@@ -213,7 +213,7 @@ class ToolsCore
                 header($header);
             }
         }
-
+        
         header('Location: '.$url);
         exit;
     }

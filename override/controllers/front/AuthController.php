@@ -460,24 +460,8 @@ class AuthControllerCore extends FrontController
 
 				if (!count($this->errors)) {
 					if ($customer->add()) {
-						// Daftrakan Ke Cookie
 						if($customer->active==0){
-							$to=$customer->email;
-							$subject="Email Verification";
-							
-							$headers = "From: admin@beltcare.com \r\n";
-							$headers .= "Reply-To: ". $customer->email . "\r\n";
-							$headers .= "MIME-Version: 1.0\r\n";
-							$headers .= "Content-Type: text/html; charset=ISO-8859-1\r\n";
-
-							$message = '<html><body>';
-							$message .='Hi';
-							$message .="We need to make sure you are human. Please verify your email and get started using your Website account";
-							$message .='<a href="'.Tools::getShopDomain(true, false).__PS_BASE_URI__.'module/emailactivation/emailactivation?key='.$customer->secure_key.'">Aktivasi Email</a>';
-							$message .="</body></html>";
-
-							mail($to,$subject,$message,$header);
-
+							$this->sendActivationMail($customer);
 							Tools::redirect(Tools::getShopDomain(true, false).__PS_BASE_URI__.'module/emailactivation/emailactivation');
 						}
 
@@ -784,6 +768,27 @@ class AuthControllerCore extends FrontController
 				'{firstname}' => $customer->firstname,
 				'{lastname}' => $customer->lastname,
 				'{email}' => $customer->email,
+				'{passwd}' => Tools::getValue('passwd')),
+			$customer->email,
+			$customer->firstname.' '.$customer->lastname
+		);
+	}
+
+	protected function sendActivationMail(Customer $customer)
+	{
+		if (!Configuration::get('PS_CUSTOMER_CREATION_EMAIL')) {
+			return true;
+		}
+
+		return Mail::Send(
+			$this->context->language->id,
+			'aktivasi',
+			Mail::l('Welcome!'),
+			array(
+				'{firstname}' => $customer->firstname,
+				'{lastname}' => $customer->lastname,
+				'{email}' => $customer->email,
+				'{key}' => $customer->secure_key,
 				'{passwd}' => Tools::getValue('passwd')),
 			$customer->email,
 			$customer->firstname.' '.$customer->lastname
