@@ -29,7 +29,6 @@ class EmailActivationEmailActivationModuleFrontController extends ModuleFrontCon
 
 	public function assign()
 	{	
-
 		$key=0;
 		if(isset ($_GET['key'])){
 			$q = 'UPDATE  `' . _DB_PREFIX_ . 'customer` SET `active` = "1" WHERE  `secure_key` =  "' . $_GET['key'] . '";';
